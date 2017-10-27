@@ -1,0 +1,21 @@
+Steps to publish using “publish-this.sh”
+
+1) create a and use a working directory $ mkdir publishing ; cd publishing
+
+2) Copy lists of target directories to your working dir.  We call each <list-file>.  Enumerate them uniquely.  
+
+3) renew your myproxy certificate for 72 hours  
+
+4) For each input list file (do each manually)
+
+   a)  create a “script” to log output rather than redirect - much easier - these names should be unique like the list files so we don’t overwrite them by accident
+       $ script <publisher-run-log-file>
+
+   b)  $ bash publish-this.sh <list-file>
+
+   c)  CTRL+D  to exit the script
+
+   d) $ grep FAIL <publisher-run-log-file>  # look for errors in the run.  if there are errors, save the log
+ 
+# the script should leave behind all the generate mayflies so we can inspect for troubleshooting issues 
+
