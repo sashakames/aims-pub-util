@@ -46,8 +46,6 @@ for fn in sys.stdin:
 	DRS = parts[0:10]
 	 
 	fn = parts[-1]
-	version = sys.argv[3]
-
 
 
 	# get attribute list
