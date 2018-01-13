@@ -61,8 +61,8 @@ for fn in sys.stdin:
 
 		if ':' in baseattr:
 			aparts = baseattr.split(':')
-			attr = parts[0]
-			out_attr = parts[1]
+			attr = aparts[0]
+			out_attr = aparts[1]
 		else:
 			attr = baseattr
 			out_attr = baseattr
