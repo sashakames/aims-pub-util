@@ -23,7 +23,11 @@ def proc_path(validator, path):
 	except:
 	    raise ESGPublishError("File %s missing required variable_id global attribute"%f)
 
+
 	table_file = sys.argv[1] + '/CMIP6_' + table + '.json'
+
+	print path, variable_id, table_file
+
 	fakeargs = [ '--variable', variable_id, table_file , path]
 	parser = argparse.ArgumentParser(prog='pptest_harness')
 	parser.add_argument('--variable')
