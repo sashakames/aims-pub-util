@@ -27,7 +27,7 @@ for fn in sys.stdin:
 		file_list =  obj["file_list"]
 
 
-	for nc_file in 	[]
+	for nc_fn in file_list:
 
 	#get path list
 
