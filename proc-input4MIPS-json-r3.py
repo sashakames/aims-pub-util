@@ -77,6 +77,8 @@ for fn in sys.stdin:
 		if type(value) is list :
 			outvalue = ','.join(value)
 		
+		if type(value) is bool:
+			outvalue = str(value)
 		if len(outvalue) > 0:
 			
 			atr_arr.append(out_attr + '=' + outvalue)
