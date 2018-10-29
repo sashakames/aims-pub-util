@@ -1,12 +1,16 @@
 CMIP6_done=/p/user_pub/CMIP6-maps-done
 
-target_file=/tmp/maplst
+target_file=$1
+
+
 
 #  first go through
 
-maps_in=$1
+#if [ ! -f $target_file ] ; then
 
-ls $maps_in > $target_file
+#target_file=/tmp/maplst
+#maps_in=$1
+#ls $maps_in > $target_file
 
 ok=0
 

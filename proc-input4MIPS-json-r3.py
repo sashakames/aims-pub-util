@@ -6,7 +6,7 @@ attr_key_lst = []
 for line in open(attr_list_fn):
 	attr_key_lst.append(line.rstrip())
 
-path_prefix = sys.argv[2]  #where the file is...
+#path_prefix = sys.argv[2]  #where the file is...
 
 for fn in sys.stdin:
 
