@@ -6,11 +6,15 @@ target_file=$1
 
 #  first go through
 
-#if [ ! -f $target_file ] ; then
-
-#target_file=/tmp/maplst
-#maps_in=$1
-#ls $maps_in > $target_file
+if [ ! -f $target_file ] ; then
+    
+    echo target is directory
+    target_file=/tmp/maplst
+    maps_in=$1
+    ls $maps_in/*.map > $target_file
+else
+    echo target is file
+fi
 
 ok=0
 
@@ -19,7 +23,7 @@ echo BEGIN $dt
 
 for map in `cat $target_file` ; do
     
-    mapfn=$maps_in/$map
+    mapfn=$map
 
     echo "BEGIN $mapfn"
 
@@ -56,7 +60,7 @@ fi
 
 for map in `cat $target_file` ; do
 
-    mapfn=$maps_in/$map
+    mapfn=$map
 
     esgpublish --project cmip6 --set-replica --map $mapfn --service fileservice --noscan --publish
     
