@@ -1,5 +1,6 @@
 # Input - a list of directories
 
+
 input_dir=/p/user_pub/publish-queue/CMIP6-list-todo
 done_dir=/p/user_pub/publish-queue/CMIP6-list-done
 
