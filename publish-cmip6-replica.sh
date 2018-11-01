@@ -12,6 +12,10 @@ if [ ! -f $target_file ] ; then
     target_file=/tmp/maplst
     maps_in=$1
     ls $maps_in/*.map > $target_file
+    if [ $? != 0 ] ; then
+        echo no files exiting
+        exit
+    fi
 else
     echo target is file
 fi
@@ -86,4 +90,4 @@ else
 
 fi
 
-echo "$0 $dt completed $ERROR" | sendmail ames4@llnl.gov
+echo "$0 $dt completed $MSG" | sendmail ames4@llnl.gov
