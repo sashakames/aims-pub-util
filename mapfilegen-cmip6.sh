@@ -9,11 +9,12 @@ for m in `ls $input_dir`
 do
 
 	echo BEGIN $m
-	for n in `cat $input_dir/$m` 
+	log_loc=$input_dir/$m
+	for n in `cat $log_loc` 
 		do 
 		echo RUN $n
-		time esgmapfile -i ../ini --project cmip6 --outdir /p/user_pub/CMIP6-maps-todo --max-processes 32 $n 
+		time esgmapfile -i ../ini --project cmip6 --outdir /p/user_pub/CMIP6-maps-todo --max-processes 16 $n 
 
 	done
-	mv $m $done_dir
+	mv $log_loc $done_dir
 done
