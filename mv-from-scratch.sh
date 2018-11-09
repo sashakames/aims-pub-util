@@ -29,7 +29,7 @@ if [ ! -d $DESTPATH ] ; then
  exit
 fi
 
-
+# TODO make * spec a parameter if you can
 ls -d $DESTPATH/$2/*/* > $TARGETPATH/$DOTDELIM.lst
 
 chgrp climatew $TARGETPATH/$DOTDELIM.lst
