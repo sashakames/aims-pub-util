@@ -1,6 +1,6 @@
 sg synda
 
-SRCBASE=/p/css03/scratch/CMIP6
+SRCBASE=/p/css03/scratch/
 TARGETPATH=/p/user_pub/publish-queue/CMIP6-list-todo
 
 PREFIX=$1
@@ -30,8 +30,8 @@ if [ ! -d $DESTPATH ] ; then
 fi
 
 # TODO make * spec a parameter if you can
-ls -d $DESTPATH/$2/*/* > $TARGETPATH/$DOTDELIM.lst
+ls -d $DESTPATH/$2/*/*/* > $TARGETPATH/$DOTDELIM.lst
 
 chgrp climatew $TARGETPATH/$DOTDELIM.lst
-chmod a+r $TARGETPATH/$DOTDELIM.lst
-chmod g+wrx $TARGETPATH/$DOTDELIM.lst
+chmod 774 $TARGETPATH/$DOTDELIM.lst
+
