@@ -8,33 +8,34 @@ PREFIX=$1
 
 SRCPATH="${SRCBASE}/${PREFIX}"
 DESTPATH=`echo $SRCPATH | sed s/scratch/esgf_publish/`
-DOTDELIM=`echo $PREFIX/$2 | sed s/'\/'/'\.'/g`
+DOTDELIM=`echo $PREFIX | sed s/'\/'/'\.'/g`
 
-for ITEM in ${SRCPATH}/* ; do
+for ITEM in `ls ${SRCPATH}` ; do
 
+    
+    SRC=$SRCPATH/$ITEM
+	if [ ! -d $SRC ] ; then
 
-
-	if [ ! -d $ITEM ] ; then
-
-	echo source path $ITEM does not exist!
-	exit
+	    echo source path $SRC does not exist!
+	    exit
 	fi
 
-mkdir -m=775 -p $DESTPATH 
+	#mkdir -m=775 -p $DESTPATH 
 
 
-mv $ITEM $DESTPATH
+	mv $SRC $DESTPATH
 
-if [ ! -d $DESTPATH ] ; then
+	if [ ! -d $DESTPATH ] ; then
 
- echo dest path $DESTPATH does not exist! 
- exit
-fi
+	    echo dest path $DESTPATH does not exist! 
+	    exit
+	fi
+
+
+# TODO make * spec a parameter if you can
+	echo $DESTPATH/$ITEM >> $TARGETPATH/$DOTDELIM.lst
 
 done
-# TODO make * spec a parameter if you can
-ls -d $DESTPATH/* > $TARGETPATH/$DOTDELIM.lst
-
 chgrp climatew $TARGETPATH/$DOTDELIM.lst
 chmod 774 $TARGETPATH/$DOTDELIM.lst
 
