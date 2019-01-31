@@ -45,7 +45,7 @@ for fn in sys.stdin:
 		#TODO - change this for new DRS ala Karl
 	#	DRS = parts[1:6] + parts[7:10] # skip mip era and realm
 
-		DRS = parts[0:9]
+		DRS = parts[4:13]
 		 
 		fn = parts[-1]
 
