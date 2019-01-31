@@ -1,6 +1,6 @@
 sg synda
 
-SRCBASE=/p/css03/scratch/CMIP6
+SRCBASE=/p/css03/scratch
 TARGETPATH=/p/user_pub/publish-queue/CMIP6-list-todo
 
 PREFIX=$1
@@ -21,7 +21,12 @@ for ITEM in `ls ${SRCPATH}` ; do
 	fi
 
 	#mkdir -m=775 -p $DESTPATH 
-
+	
+	if [ -d $DESTPATH/$ITEM ] ; then
+	    echo $DESTPATH/$ITEM exists
+	    continue
+	fi
+	    
 
 	mv $SRC $DESTPATH
 
