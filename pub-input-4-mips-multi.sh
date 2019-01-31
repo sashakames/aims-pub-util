@@ -3,7 +3,7 @@
 #  $3 is list of json in a text file
 
 directory_name=$1
-data_directory_list=$2
+dir_list=$2
 json_list=$3
 
 pushd /esg/config/esgcet
@@ -11,7 +11,6 @@ cp esg.input4mips.ini.prep esg.input4mips.ini
 popd
 
 mkdir -p $directory_name/mapfiles
-
 update_file=$directory_name/$directory_name.update
 
 echo "Preprocessing json"
@@ -21,7 +20,6 @@ if [ ! -f $json_list ] ; then
     exit -1
 fi
 
-#cat $json_list | python ../aims-pub-util/proc-input4MIPS-json-r3.py facet-list | uniq > $update_file
 cat $json_list | python ./proc-input4MIPS-json-r3.py facet-list | uniq > $update_file
 
 if [ $? -ne 0 ] ; then
@@ -29,12 +27,16 @@ if [ $? -ne 0 ] ; then
     exit
 fi
 
-for i in `cat $data_directory_list`; do
-    echo $i
-    ##(done)## esgmapfile --project input4mips --outdir $directory_name/mapfiles $i
-done
+if [ ! -f $dir_list ] ; then
+    echo ERROR $dir_list does not exists
+    exit -1
+fi
 
-## exit ### TESTING 
+for n in `cat $dir_list`; do
+    echo $n
+    dn=`dirname $n`
+    esgmapfile --project input4mips --outdir $1/mapfiles $dn
+done
 
 if [ $? -ne 0 ] ; then
     echo ERROR detected
