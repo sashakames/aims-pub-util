@@ -10,6 +10,7 @@ for i in `seq 1 5000` ; do
 	if [ $count -eq 0 ] ; then
 
 	    echo No Files found `date`
+		sleep 500
     	continue
 	fi
 
@@ -25,7 +26,6 @@ for i in `seq 1 5000` ; do
 		fi	
 	mv $m $done_dir
 	done
-	
-	sleep 500
+
 
 done
