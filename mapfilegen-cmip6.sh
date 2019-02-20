@@ -1,19 +1,20 @@
 # Input - a list of directories
 
+input_dir=$1
+m=$2
 
-input_dir=/p/user_pub/publish-queue/CMIP6-list-todo
-done_dir=/p/user_pub/publish-queue/CMIP6-list-done
+for n in `cat $input_dir/$m` 
+	do 
+	echo RUN $n
+	if [ ! -d $n ] ; then 
+		echo missing perms or mount [FAIL] $m
+		exit 1
+	fi
+	time esgmapfile -i ../ini --project cmip6 --outdir /p/user_pub/CMIP6-maps-todo --max-processes 32 $n 
 
-
-for m in `ls $input_dir` 
-do
-
-	echo BEGIN $m
-	for n in `cat $input_dir/$m` 
-		do 
-		echo RUN $n
-		time esgmapfile -i ../ini --project cmip6 --outdir /p/user_pub/CMIP6-maps-todo --max-processes 32 $n 
-
-	done
-	mv $m $done_dir
+	if [ $? -ne 0 ]; then
+		echo esgmapfile [FAIL] $m
+		exit 1
+	fi
 done
+

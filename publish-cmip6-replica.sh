@@ -62,6 +62,8 @@ if [ $? != 0 ]  ; then
     exit
 fi
 
+MSG='[SUCCESS]'
+
 for map in `cat $target_file` ; do
 
     mapfn=$map
@@ -71,15 +73,13 @@ for map in `cat $target_file` ; do
     if [ $? != 0 ]  ; then 
 
 	echo "[FAIL] esgpublish esgsearch $map"
+    ok=1
 	continue
     fi
 
     mv  $mapfn $CMIP6_done
 
 done
-
-MSG='[SUCCESS]'
-
 
 if [ $ok -eq 0 ] ;then
 
@@ -90,4 +90,5 @@ else
 
 fi
 
+echo "$0 $dt completed $MSG" 
 echo "$0 $dt completed $MSG" | sendmail ames4@llnl.gov
