@@ -3,13 +3,6 @@
 input_dir=$1
 m=$2
 
-count=`ls $input_dir | wc -l` 
-
-if [ $count -eq 0 ] ; then
-
-    echo No Files found
-    exit 0
-fi
 
 for n in `cat $input_dir/$m` 
 	do 
