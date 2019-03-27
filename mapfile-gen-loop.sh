@@ -24,7 +24,7 @@ for i in `seq 1 5000` ; do
 			echo  "mapfilegen-cmip6.sh [FAIL] " $m | sendmail ames4@llnl.gov	
 			exit	 1	
 		fi	
-	mv $m $done_dir
+	mv $input_dir/$m $done_dir
 	done
 
 

@@ -12,11 +12,12 @@ for n in `cat $input_dir/$m`
 		echo missing perms or mount [FAIL] $m
 		exit 1
 	fi
-	time esgmapfile -i $inidir --project cmip6 --outdir /p/user_pub/CMIP6-maps-todo --max-processes 16 $n 
+	time esgmapfile -i $inidir --project cmip6 --outdir /p/user_pub/CMIP6-maps-todo --max-processes 8 $n 
 
 	if [ $? -ne 0 ]; then
 		echo esgmapfile $n [FAIL] $m
 		exit 1
 	fi
+
 done
 	       
