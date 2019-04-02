@@ -23,6 +23,14 @@ else
     echo target is file
 fi
 
+stop=`cat /tmp/pub_status`
+
+if [ $stop == "true" ] ; then
+    echo Received Stop Notification, exiting 
+    exit
+fi 
+
+
 ok=0
 
 dt=`date +%s`
