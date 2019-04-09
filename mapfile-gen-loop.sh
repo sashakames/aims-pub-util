@@ -17,8 +17,8 @@ for i in `seq 1 5000` ; do
 	for m in `ls $input_dir` 
 	do
 
-		echo BEGIN $m
-		bash mapfilegen-cmip6.sh $input_dir $m
+		echo BEGIN $m `date`
+		time bash mapfilegen-cmip6.sh $input_dir $m
 		if [ $? -ne 0 ] ; then
 			echo  "mapfilegen-cmip6.sh [FAIL] " $m
 			echo  "mapfilegen-cmip6.sh [FAIL] " $m | sendmail ames4@llnl.gov	
