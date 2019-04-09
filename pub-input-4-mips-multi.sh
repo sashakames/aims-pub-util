@@ -13,6 +13,8 @@ popd
 mkdir -p $directory_name/mapfiles
 update_file=$directory_name/$directory_name.update
 
+dest_loc=/p/user_pub/publish-queue/input4MIPs-list-done
+
 echo "Preprocessing json"
 
 if [ ! -f $json_list ] ; then
@@ -20,12 +22,14 @@ if [ ! -f $json_list ] ; then
     exit -1
 fi
 
-cat $json_list | python ./proc-input4MIPS-json-r3.py facet-list | uniq > $update_file
+cat $json_list | python ../aims-pub-util/proc-input4MIPS-json-r3.py facet-list > tmpfile
 
 if [ $? -ne 0 ] ; then
     echo ERROR detected
     exit
 fi
+
+uniq tmpfile > $update_file
 
 if [ ! -f $dir_list ] ; then
     echo ERROR $dir_list does not exists
@@ -77,6 +81,8 @@ esgpublish --project input4mips --map $directory_name/mapfiles --noscan --publis
 if [ $? -ne 0 ] ; then
     echo ERROR detected
     exit
+else
+    mv $dir_list $json_list $dest_loc
 fi
 
 
