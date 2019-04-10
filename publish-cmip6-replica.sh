@@ -27,6 +27,7 @@ stop=`cat /tmp/pub_status`
 
 if [ $stop == "true" ] ; then
     echo Received Stop Notification, exiting 
+    echo "CMIP6 publication halted" | sendmail baldwin32@llnl.gov
     exit
 fi 
 
