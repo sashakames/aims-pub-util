@@ -34,7 +34,7 @@ fi
 
 ok=0
 
-dt=`date +%s`
+dt=`date +%y%m%d_%H%M`
 
 count=`wc -l $target_file | awk '{print $1}'`
 
@@ -43,14 +43,13 @@ if [ $count -eq 0 ] ; then
     exit
 fi
 
-echo PROCESSING $count mapfiles $i
-echo BEGIN $dt $i
+echo PROCESSING $count mapfiles $dt $i
 
 for map in `cat $target_file` ; do
     
     mapfn=$map
 
-    echo "BEGIN $mapfn"
+    echo "BEGINPUB $mapfn"
 
 
 	esgpublish --project cmip6 --set-replica --map $mapfn
@@ -78,8 +77,7 @@ esgpublish --project cmip6 --thredds-reinit
 if [ $? != 0 ]  ; then 
     
     echo "[FAIL] esgpublish thredds reinit"
-
-    echo "publish-this $1 completed [FAIL]" | sendmail ames4@llnl.gov    
+    echo "publish-this $1 $dt completed [FAIL]" | sendmail ames4@llnl.gov    
     exit
 fi
 
@@ -109,7 +107,7 @@ if [ $ok -eq 0 ] ;then
 
 else
     MSG='[ERROR]'
-    
+    echo "$0 $dt completed $MSG" | sendmail ames4@llnl.gov
 fi
 
 done
