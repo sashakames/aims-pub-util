@@ -17,7 +17,7 @@ do
     	echo Received Stop Notification, exiting before $m $i
     fi
 
-    echo RUN $n
+    echo RUN $i $n 
     if [ ! -d $n ] ; then 
 	echo missing perms or mount [FAIL] $m $i 
 	echo missing perms or mount [FAIL] $m $i | sendmail ames4@llnl.gov
