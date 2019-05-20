@@ -1,16 +1,19 @@
-maps_loc=p
+umask 002
 
-pushd $maps_loc
+maps_loc=/p/user_pub/CMIP6-maps-done
 
-thedate='date +%y%m%d' 
+thedate=`date +%y%m%d` 
 
-tar -czf /p/user_pub/publish-queue/CMIP6-map-tarballs/mapfiles-$thedate.tgz *.map *.txt 
+tar -czf /p/user_pub/publish-queue/CMIP6-map-tarballs/mapfiles-$thedate.tgz $maps_loc
 
-if [ !$? == 0 ] ; then
+if [ $? != 0 ] ; then
 
    echo Error archiving mapfiles $thedate 
    exit 1
 fi 
 
-rm *.map *.txt
-popd
+
+for n in `ls $maps_loc` ; do
+
+    rm $maps_loc/$n
+done

@@ -25,9 +25,11 @@ fi
 
 stop=`cat /tmp/pub_status`
 
+recipient=`cat /tmp/pub_recip`
+
 if [ $stop == "true" ] ; then
     echo Received Stop Notification, exiting 
-    echo "CMIP6 publication halted" | sendmail baldwin32@llnl.gov
+    echo "CMIP6 publication halted" | sendmail $recipient
     exit
 fi 
 
@@ -108,6 +110,7 @@ if [ $ok -eq 0 ] ;then
 else
     MSG='[ERROR]'
     echo "$0 $dt completed $MSG" | sendmail ames4@llnl.gov
+    exit
 fi
 
 done
