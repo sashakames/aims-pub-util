@@ -3,17 +3,20 @@ if [ -z $1 ] ; then
     exit
 fi
 
-#echo 'Pass4esg*' | myproxy-logon -s esgf-node.llnl.gov -l sashakames -o ~/.globus/certificate-file -S -t 72
+PASSWORD=''
 
-for line in `cat var-list` ; do
+#echo $PASSWORD | myproxy-logon -s esgf-node.llnl.gov -l sashakames -o ~/.globus/certificate-file -S -t 72
 
-   sid=`awk FS='-' '{print $1}'`
-   vid=`awk FS='-' '{print $2}'`
+# for line in `cat $2` ; do
 
-   sed s/XXXX/$vid/ update.xml.tmpl  | sed s/YYYY/sid/ > update.xml
+#     echo Processing: $line
+#    sid=`echo $line | awk -v FS='_' '{print $1}'`
+#    vid=`echo $line | awk -v FS='_' '{print $2}'`
 
-   wget --no-check-certificate --ca-certificate /export/ames4/.globus/certificate-file --certificate /export/ames4/.globus/certificate-file --private-key /export/ames4/.globus/certificate-file --verbose --post-file=update.xml "https://$1.llnl.gov/esg-search/ws/update"
+#    sed s/XXXX/$vid/ update.xml.tmpl  | sed s/YYYY/$sid/ > update.xml
+
+   wget --no-check-certificate --ca-certificate /export/ames4/.globus/certificate-file --certificate /export/ames4/.globus/certificate-file --private-key /export/ames4/.globus/certificate-file --verbose --post-file=update.xml "https://esgf-node.llnl.gov/esg-search/ws/update"
 
    cat update
    rm update
-done
+#done

@@ -14,7 +14,7 @@ for line in open(sys.argv[1]):
 
     pp2 = path.split('/')
 
-    dset_id = ".".join(pp2[4:13]) + "#" + pp2[13]
+    dset_id = ".".join(pp2[4:5]) + "#" + pp2[5][1:]
     
     out_arr = []
     out_arr.append(dset_id)
