@@ -5,13 +5,16 @@ for n in `cat $1` ; do
 	len=`echo $n | awk -v FS='/' '{print NF}'`
 
 	if [ $len == $fields ] ; then
+	        dn=`dirname $n`
+		pubdn=/p/css03/esgf_publish${dn}
 
-		dn=`dirname $n`
-
-		res=`ls /p/css03/esgf_publish/$dn`
-		echo $dn '"'${res}'"'
+		res=`ls $pubdn`
+		echo "PUB $dn ${res}"
+		scrdn=/p/css03/scratch${dn}
+		res=`ls $scrdn`
+		echo "SCR $dn ${res}"
 
 	else
-		echo "/p/css03/scratch/${n} MOVE"
+		echo "MOVE /p/css03/scratch/${n}"
 	fi
 done
