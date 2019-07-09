@@ -63,6 +63,8 @@ for map in `cat $target_file` ; do
 		continue
 	fi
 
+
+
         esgpublish --project cmip6 --set-replica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
 
 	if [ $? != 0 ]  ; then 
@@ -73,6 +75,8 @@ for map in `cat $target_file` ; do
 	fi
 
 done
+
+echo true > /tmp/harvest_skip
 
 esgpublish --project cmip6 --thredds-reinit
 
@@ -102,6 +106,8 @@ for map in `cat $target_file` ; do
     mv  $mapfn $CMIP6_done
 
 done
+
+echo false > /tmp/harvest_skip
 
 if [ $ok -eq 0 ] ;then
 
