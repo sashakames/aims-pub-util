@@ -16,17 +16,20 @@ awk '{if ($1 == 2) print $2}' sorted.retracted.$td.txt > dup.retracted.$td.txt
 cat $vfn $lfn | sort | uniq -c > sorted.versrepl.$td.txt
 awk '{if ($1 == 2) print $2}' sorted.versrepl.$td.txt > dup.versrepl.$td.txt
 
+destdir=$HOME/pub/logdir/obsolete-ds-$td
 
-mkdir obsolete-ds-$td
+mkdir $destdir
 
 for id in `cat dup.versrepl.$td.txt` ; do
     
-    wget --no-check-certificate --ca-certificate $cert --certificate $cert --private-key $cert --verbose -O response.xml --post-data="id=$id" https://esgf-node.llnl.gov/esg-search/ws/retract
+    wget --no-check-certificate --ca-certificate $cert --certificate $cert --private-key $cert --verbose -O response.xml --post-data="id=$id|aims3.llnl.gov" https://esgf-node.llnl.gov/esg-search/ws/retract
 
     cat response.xml
     rm response.xml
 done
 
-mv $rfn $vfn $lfn sorted.retracted.$td.txt dup.retracted.$td.txt sorted.versrepl.$td.txtdup.versrepl.$td.txt res-$td
+mv $rfn $vfn $lfn sorted.retracted.$td.txt dup.retracted.$td.txt sorted.versrepl.$td.txt dup.versrepl.$td.txt $destdir
+
+
 
 
