@@ -20,7 +20,7 @@ destdir=$HOME/pub/logdir/obsolete-ds-$td
 
 mkdir $destdir
 
-for id in `cat dup.versrepl.$td.txt` ; do
+for id in `cat dup.retracted.$td.txt` ; do
     
     wget --no-check-certificate --ca-certificate $cert --certificate $cert --private-key $cert --verbose -O response.xml --post-data="id=$id|aims3.llnl.gov" https://esgf-node.llnl.gov/esg-search/ws/retract
 
