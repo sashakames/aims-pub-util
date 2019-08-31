@@ -2,7 +2,7 @@ input_dir=/p/user_pub/publish-queue/CMIP6-list-todo
 done_dir=/p/user_pub/publish-queue/CMIP6-list-done
 
 
-for i in `seq 1 5000` ; do
+for i in `seq 1 50000` ; do
 
 
 	count=`ls $input_dir | wc -l` 
@@ -27,5 +27,6 @@ for i in `seq 1 5000` ; do
 	mv $input_dir/$m $done_dir
 	done
 
-
 done
+
+echo "CMIP6 mapfile-gen-loop completed" | sendmail ames4@llnl.gov

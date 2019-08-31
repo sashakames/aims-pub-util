@@ -2,8 +2,8 @@
 
 input_dir=$1
 m=$2
-outdir=/p/user_pub/CMIP6-maps-todo 
-#outdir=/p/user_pub/publish-queue/CMIP6-maps-in
+#outdir=/p/user_pub/CMIP6-maps-todo 
+outdir=/p/user_pub/publish-queue/CMIP6-maps-in
 
 inidir=/export/ames4/pub/ini
 
@@ -15,9 +15,10 @@ do
     
     if [ $stop == "true" ] ; then
     	echo Received Stop Notification, exiting before $m $i
+	exit
     fi
 
-    echo RUN $n
+    echo RUN $n $i
     if [ ! -d $n ] ; then 
 	echo missing perms or mount [FAIL] $m $i 
 	echo missing perms or mount [FAIL] $m $i | sendmail ames4@llnl.gov
