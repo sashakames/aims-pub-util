@@ -38,8 +38,9 @@ for ITEM in `ls ${SRCPATH}` ; do
 
 
 # TODO make * spec a parameter if you can
-	echo $DESTPATH/$ITEM >> $TARGETPATH/$DOTDELIM.lst
-
+	for n in $DESTPATH/$ITEM/*/* ; do
+	    echo $n >> $TARGETPATH/$DOTDELIM.lst
+	done
 done
 chgrp climatew $TARGETPATH/$DOTDELIM.lst
 chmod 774 $TARGETPATH/$DOTDELIM.lst

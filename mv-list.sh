@@ -1,10 +1,17 @@
 sg synda
+umask 002
 
 SRCBASE=/p/css03/scratch
 DESTBASE=/p/css03/esgf_publish
 TARGETPATH=/p/user_pub/publish-queue/CMIP6-list-todo
 
 LIST=$1
+
+thedate=`date +%y%m%d_%H%M`
+
+
+TARGETFILE=/tmp/$LIST.$thedate.lst
+
 
 for itbase in `cat $LIST` ; do
 
@@ -17,31 +24,43 @@ for itbase in `cat $LIST` ; do
     
     if [ ! -d $SRC ] ; then
 
-	echo source path $SRC does not exist!
-	exit
+	echo source-path-not-exist $SRC
+	continue
     fi
 
-    mkdir -m=775 -p $DESTPATH 
+    mkdir -p $DESTPATH 
     
     if [ -d $DESTPATH/$ITEM ] ; then
-	echo $DESTPATH/$ITEM exists
+	mkdir $DESTPATH/$ITEM
+	
+	mv $SRC/* $DESTPATH/$ITEM
+
+	if  [ ! $? == 0 ] ; then
+	    echo error-file-move $SRCPATH/$ITEM
+	    
+	fi
+
+	echo $DESTPATH >> $TARGETFILE
 	continue
     fi
 
     if [ ! -d $DESTPATH ] ; then
 
-	echo dest path $DESTPATH does not exist! 
-	exit
+	echo dest-path-not-exist $DESTPATH
+	continue
     fi
    
     mv $SRC $DESTPATH
 
 
-# TODO make * spec a parameter if you can
-	echo $DESTPATH/$ITEM >> $TARGETPATH/$LIST.lst
+# TODO make the choice of the item or encompassing directory a parameter if you can
+
+#	echo $DESTPATH >> $TARGETPATH/$LIST.lst
+	echo $DESTPATH >> $TARGETFILE
 
 done
 
-chgrp climatew $TARGETPATH/$LIST.lst
-chmod 774 $TARGETPATH/$LIST.lst
+chgrp climatew $TARGETFILE
+chmod 664 $TARGETFILE
 
+mv $TARGETFILE $TARGETPATH

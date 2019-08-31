@@ -1,4 +1,4 @@
-CMIP6_done=/p/user_pub/CMIP6-maps-done
+CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
 CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err
 
 target_file=$1
@@ -25,9 +25,11 @@ fi
 
 stop=`cat /tmp/pub_status`
 
+recipient=`cat /tmp/pub_recip`
+
 if [ $stop == "true" ] ; then
     echo Received Stop Notification, exiting 
-    echo "CMIP6 publication halted" | sendmail baldwin32@llnl.gov
+    echo "CMIP6 publication halted" | sendmail $recipient
     exit
 fi 
 
@@ -51,8 +53,15 @@ for map in `cat $target_file` ; do
 
     echo "BEGINPUB $mapfn"
 
+    isreplica="--set-replica"
 
-	esgpublish --project cmip6 --set-replica --map $mapfn
+    isethrsm=`echo $map | grep -c E3SM` 
+
+    if [ $isethrsm -gt 0 ] ; then
+
+    fi
+
+	esgpublish --project cmip6 $isreplica --map $mapfn
 
 	if [ $? != 0 ]  ; then 
 
@@ -61,7 +70,7 @@ for map in `cat $target_file` ; do
 		continue
 	fi
 
-        esgpublish --project cmip6 --set-replica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
+    esgpublish --project cmip6 $isreplica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
 
 	if [ $? != 0 ]  ; then 
 
@@ -87,7 +96,7 @@ for map in `cat $target_file` ; do
 
     mapfn=$map
 
-    esgpublish --project cmip6 --set-replica --map $mapfn --service fileservice --noscan --publish
+    esgpublish --project cmip6 --map $mapfn --service fileservice --noscan --publish
     
     if [ $? != 0 ]  ; then 
 
@@ -108,6 +117,7 @@ if [ $ok -eq 0 ] ;then
 else
     MSG='[ERROR]'
     echo "$0 $dt completed $MSG" | sendmail ames4@llnl.gov
+    exit
 fi
 
 done

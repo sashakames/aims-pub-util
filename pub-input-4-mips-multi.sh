@@ -83,6 +83,7 @@ if [ $? -ne 0 ] ; then
     exit
 else
     mv $dir_list $json_list $dest_loc
+    echo "$@ completed" | sendmail durack1@llnl.gov
 fi
 
 
