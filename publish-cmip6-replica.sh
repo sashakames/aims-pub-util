@@ -2,8 +2,7 @@ CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
 CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err
 CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready
 target_file=$1
-ready_file=$1.ready
-
+ready_file=/tmp/ready_maps
 
 num_todo=$2
 
