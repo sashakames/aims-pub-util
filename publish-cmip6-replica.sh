@@ -47,6 +47,7 @@ for i in `seq 1 48` ; do
     fi
 
     echo PROCESSING $count mapfiles $dt $i
+    touch $ready_file
     echo -n "" > $ready_file
 
     for map in `cat $target_file` ; do
@@ -82,9 +83,9 @@ for i in `seq 1 48` ; do
     		ok=1
     		continue
     	fi
+        echo $mapfn >> $ready_file
     done
 
-    echo $mapfn >> $ready_file
 
     esgpublish --project cmip6 --thredds-reinit
 
