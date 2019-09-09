@@ -1,7 +1,9 @@
 CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
 CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err
-
+CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready
 target_file=$1
+ready_file=$1.ready
+
 
 num_todo=$2
 
@@ -9,121 +11,110 @@ num_todo=$2
 
 for i in `seq 1 48` ; do 
 
-if [ ! -f $target_file ] ; then
-    
-    echo target is directory
-    target_file=/tmp/maplst
-    maps_in=$1
-    ls $maps_in/*.map | head -n $num_todo > $target_file
-    if [ $? != 0 ] ; then
-        echo No Mapfiles exiting 1
+    if [ ! -f $target_file ] ; then
+        
+        echo target is directory
+        target_file=/tmp/maplst
+        maps_in=$1
+        ls $maps_in/*.map | head -n $num_todo > $target_file
+        if [ $? != 0 ] ; then
+            echo No Mapfiles exiting 1
+            exit
+        fi
+    else
+        echo target is file
+    fi
+
+    stop=`cat /tmp/pub_status`
+
+    recipient=`cat /tmp/pub_recip`
+
+    if [ $stop == "true" ] ; then
+        echo Received Stop Notification, exiting 
+        echo "CMIP6 publication halted" | sendmail $recipient
+        exit
+    fi 
+
+
+    ok=0
+
+    dt=`date +%y%m%d_%H%M`
+
+    count=`wc -l $target_file | awk '{print $1}'`
+
+    if [ $count -eq 0 ] ; then
+        echo No Mapfiles exiting 2
         exit
     fi
-else
-    echo target is file
-fi
 
-stop=`cat /tmp/pub_status`
+    echo PROCESSING $count mapfiles $dt $i
+    echo -n "" > $ready_file
 
-recipient=`cat /tmp/pub_recip`
+    for map in `cat $target_file` ; do
+        
+        mapfn=$map
 
-if [ $stop == "true" ] ; then
-    echo Received Stop Notification, exiting 
-    echo "CMIP6 publication halted" | sendmail $recipient
-    exit
-fi 
+        echo "BEGINPUB $mapfn"
 
+        isreplica="--set-replica"
 
-ok=0
+        isethrsm=`echo $map | grep -c E3SM` 
 
-dt=`date +%y%m%d_%H%M`
+        if [ $isethrsm -gt 0 ] ; then
+        	isreplica=""
+        fi
 
-count=`wc -l $target_file | awk '{print $1}'`
+        esgpublish --project cmip6 $isreplica --map $mapfn
 
-if [ $count -eq 0 ] ; then
-    echo No Mapfiles exiting 2
-    exit
-fi
+    	if [ $? != 0 ]  ; then 
 
-echo PROCESSING $count mapfiles $dt $i
+    		echo "[FAIL] esgpublish postgres $map"
+            mv $mapfn $CMIP6_err
+    		ok=1
+    		continue
+    	fi
 
-for map in `cat $target_file` ; do
-    
-    mapfn=$map
+        esgpublish --project cmip6 $isreplica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
 
-    echo "BEGINPUB $mapfn"
+    	if [ $? != 0 ]  ; then 
 
-    isreplica="--set-replica"
+    		echo "[FAIL] esgpublish thredds $map"
+            mv $mapfn $CMIP6_err
+    		ok=1
+    		continue
+    	fi
+    done
 
-    isethrsm=`echo $map | grep -c E3SM` 
+    echo $mapfn >> $ready_file
 
-    if [ $isethrsm -gt 0 ] ; then
-	isreplica=""
-    fi
+    esgpublish --project cmip6 --thredds-reinit
 
-    esgpublish --project cmip6 $isreplica --map $mapfn
-
-	if [ $? != 0 ]  ; then 
-
-		echo "[FAIL] esgpublish postgres $map"
-		ok=1
-		continue
-	fi
-
-    esgpublish --project cmip6 $isreplica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
-
-
-	if [ $? != 0 ]  ; then 
-
-		echo "[FAIL] esgpublish thredds $map"
-		ok=1
-		continue
-	fi
-
-done
-
-echo true > /tmp/harvest_skip
-
-esgpublish --project cmip6 --thredds-reinit
-
-if [ $? != 0 ]  ; then 
-    
-    echo "[FAIL] esgpublish thredds reinit"
-    echo "publish-this $1 $dt completed [FAIL]" | sendmail ames4@llnl.gov    
-    exit
-fi
-
-MSG='[SUCCESS]'
-
-for map in `cat $target_file` ; do
-
-    mapfn=$map
-
-    esgpublish --project cmip6 --map $mapfn --service fileservice --noscan --publish
-    
     if [ $? != 0 ]  ; then 
-
-	echo "[FAIL] esgpublish esgsearch $map"
-    ok=1
-    mv  $mapfn $CMIP6_err
-	continue
+        
+        echo "[FAIL] esgpublish thredds reinit"
+        echo "publish-this $1 $dt completed [FAIL]" | sendmail ames4@llnl.gov    
+        exit
     fi
 
-    mv  $mapfn $CMIP6_done
+    MSG='[SUCCESS]'
 
-done
+    for map in `cat $ready_file` ; do
 
-echo false > /tmp/harvest_skip
+        mv $mapfn $CMIP6_ready
+        if [ $? != 0 ] ; then
+            echo "[ERROR] Moving file to Ready directory"
+        fi
+    done
 
-if [ $ok -eq 0 ] ;then
+    if [ $ok -eq 0 ] ;then
 
-    mv $target_file $CMIP6_done/mapfile_run_$dt.txt
+        mv $target_file $CMIP6_done/mapfile_run_$dt.txt
 
-else
-    MSG='[ERROR]'
-    echo "$0 $dt completed $MSG" | sendmail ames4@llnl.gov
-    exit
-fi
+    else
+        MSG='[ERROR]'
+        echo "$0 $dt completed $MSG" | sendmail ames4@llnl.gov
+        exit
+    fi
 
 done
 
