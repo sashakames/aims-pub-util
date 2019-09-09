@@ -1,4 +1,6 @@
 export UVCDAT_ANONYMOUS_LOG=no
+mapsin=/p/user_pub/publish-queue/CMIP6-maps-in
+
 for i in `seq 1 50000`  ; do
     stop=`cat /tmp/pub_status`
     
@@ -6,10 +8,9 @@ for i in `seq 1 50000`  ; do
 	echo Received Stop Notification, exiting 
 	exit
     fi 
-    
-    time bash ../aims-pub-util/publish-cmip6-replica.sh /p/user_pub/CMIP6-maps-todo 120
-    sleep 10 
 
+    time bash ../aims-pub-util/publish-cmip6-replica.sh $mapsin 120
+    sleep 300 
 done
 
 echo "CMIP6 publication loop completed" | sendmail ames4@llnl.gov

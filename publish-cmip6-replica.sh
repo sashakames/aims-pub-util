@@ -1,4 +1,4 @@
-CMIP6_done=/p/user_pub/CMIP6-maps-done
+CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
 CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err
 
 target_file=$1
@@ -53,8 +53,15 @@ for map in `cat $target_file` ; do
 
     echo "BEGINPUB $mapfn"
 
+    isreplica="--set-replica"
 
-	esgpublish --project cmip6 --set-replica --map $mapfn
+    isethrsm=`echo $map | grep -c E3SM` 
+
+    if [ $isethrsm -gt 0 ] ; then
+	isreplica=""
+    fi
+
+    esgpublish --project cmip6 $isreplica --map $mapfn
 
 	if [ $? != 0 ]  ; then 
 
@@ -63,9 +70,8 @@ for map in `cat $target_file` ; do
 		continue
 	fi
 
+    esgpublish --project cmip6 $isreplica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
 
-
-        esgpublish --project cmip6 --set-replica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
 
 	if [ $? != 0 ]  ; then 
 
@@ -93,7 +99,7 @@ for map in `cat $target_file` ; do
 
     mapfn=$map
 
-    esgpublish --project cmip6 --set-replica --map $mapfn --service fileservice --noscan --publish
+    esgpublish --project cmip6 --map $mapfn --service fileservice --noscan --publish
     
     if [ $? != 0 ]  ; then 
 

@@ -1,6 +1,6 @@
 umask 002
 
-maps_loc=/p/user_pub/CMIP6-maps-done
+maps_loc=/p/user_pub/publish-queue/CMIP6-maps-done
 
 thedate=`date +%y%m%d` 
 
@@ -15,5 +15,5 @@ fi
 
 for n in `ls $maps_loc` ; do
 
-    rm $maps_loc/$n
+    rm -f $maps_loc/$n
 done

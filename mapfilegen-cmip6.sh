@@ -2,7 +2,7 @@
 
 input_dir=$1
 m=$2
-outdir=/p/user_pub/CMIP6-maps-todo 
+outdir=/p/user_pub/publish-queue/CMIP6-maps-todo 
 #outdir=/p/user_pub/publish-queue/CMIP6-maps-in
 
 inidir=/export/ames4/pub/ini
