@@ -98,8 +98,9 @@ for i in `seq 1 48` ; do
 
     MSG='[SUCCESS]'
 
-    for map in `cat $ready_file` ; do
+    for mapfn in `cat $ready_file` ; do
 
+	
         mv $mapfn $CMIP6_ready
         if [ $? != 0 ] ; then
             echo "[ERROR] Moving file to Ready directory"
