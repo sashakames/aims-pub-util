@@ -61,3 +61,4 @@ do
 done
 
 echo none > last_file
+echo 0 > current_line
