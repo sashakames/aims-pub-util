@@ -44,6 +44,9 @@ def print_dsets(search_url):
 			pf(n)
 
 
+
+
+
 if sys.argv[1] == "R":  # retracted original data
 
 	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=false&retracted=true&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id"
@@ -54,7 +57,9 @@ elif sys.argv[1] == "V":  # old versions of original data
 	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=false&latest=false&retracted=false&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id"
 
 elif sys.argv[1] == "L":  # latest replicas at LLNL
-	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=true&latest=true&limit={}&offset={}&data_node=aims3.llnl.gov&format=application%2fsolr%2bjson&fields=instance_id,number_of_files"
+	data_node = sys.argv[2]
+	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=true&latest=true&limit={}&offset={}&data_node={}&format=application%2fsolr%2bjson&fields=instance_id,number_of_files".format(data_node)
+
 elif sys.argv[1] == "O":  # latest original data
 	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=false&latest=true&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id,number_of_files"
 
