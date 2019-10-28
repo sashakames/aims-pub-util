@@ -1,6 +1,6 @@
 CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
-CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err
-CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready
+CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err2
+CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready.3
 target_file=$1
 ready_file=/tmp/ready_maps
 
@@ -58,7 +58,7 @@ for i in `seq 1 48` ; do
 
         isreplica="--set-replica"
 
-        isethrsm=`echo $map | grep -c E3SM` 
+        isethrsm=`echo $map | grep -c MCM-UA` 
 
         if [ $isethrsm -gt 0 ] ; then
         	isreplica=""
