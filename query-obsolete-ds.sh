@@ -41,6 +41,8 @@ do
         rm response.xml
     done
 
-    mv $rfn $vfn ${!lfni} sorted.retracted.$i.$td.txt dup.retracted.$i.$td.txt sorted.versrepl.$i.$td.txt dup.versrepl.$i.$td.txt $destdir
+    mv ${!lfni} sorted.retracted.$i.$td.txt dup.retracted.$i.$td.txt sorted.versrepl.$i.$td.txt dup.versrepl.$i.$td.txt $destdir
 
 done
+
+mv $rfn $vfn $destdir
