@@ -1,6 +1,6 @@
 CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
-CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err
-CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready
+CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err2
+CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready.3
 target_file=$1
 ready_file=/tmp/ready_maps
 
@@ -51,6 +51,40 @@ for i in `seq 1 48` ; do
     echo -n "" > $ready_file
 
     for map in `cat $target_file` ; do
+        
+        mapfn=$map
+
+        echo "BEGINPUB $mapfn"
+
+        isreplica="--set-replica"
+
+        isethrsm=`echo $map | grep -c MCM-UA` 
+
+        if [ $isethrsm -gt 0 ] ; then
+        	isreplica=""
+        fi
+
+        esgpublish --project cmip6 $isreplica --map $mapfn
+
+    	if [ $? != 0 ]  ; then 
+
+    		echo "[FAIL] esgpublish postgres $map"
+            mv $mapfn $CMIP6_err
+    		ok=1
+    		continue
+    	fi
+
+        esgpublish --project cmip6 $isreplica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
+
+    	if [ $? != 0 ]  ; then 
+
+    		echo "[FAIL] esgpublish thredds $map"
+            mv $mapfn $CMIP6_err
+    		ok=1
+    		continue
+    	fi
+        echo $mapfn >> $ready_file
+    done
 
     cat $target_file | parallel -j 4 bash publish-kernel.sh {} $ready_file 'UA-MCM'
 
