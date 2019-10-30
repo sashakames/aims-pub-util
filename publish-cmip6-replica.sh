@@ -51,41 +51,8 @@ for i in `seq 1 48` ; do
     echo -n "" > $ready_file
 
     for map in `cat $target_file` ; do
-        
-        mapfn=$map
 
-        echo "BEGINPUB $mapfn"
-
-        isreplica="--set-replica"
-
-        isethrsm=`echo $map | grep -c E3SM` 
-
-        if [ $isethrsm -gt 0 ] ; then
-        	isreplica=""
-        fi
-
-        esgpublish --project cmip6 $isreplica --map $mapfn
-
-    	if [ $? != 0 ]  ; then 
-
-    		echo "[FAIL] esgpublish postgres $map"
-            mv $mapfn $CMIP6_err
-    		ok=1
-    		continue
-    	fi
-
-        esgpublish --project cmip6 $isreplica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
-
-    	if [ $? != 0 ]  ; then 
-
-    		echo "[FAIL] esgpublish thredds $map"
-            mv $mapfn $CMIP6_err
-    		ok=1
-    		continue
-    	fi
-        echo $mapfn >> $ready_file
-    done
-
+    cat $target_file | parallel -j 4 bash publish-kernel.sh {} $ready_file 'UA-MCM'
 
     esgpublish --project cmip6 --thredds-reinit
 
