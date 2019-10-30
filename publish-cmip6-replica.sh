@@ -1,7 +1,6 @@
 CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
 CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err2
 CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready.3
-target_file=$1
 ready_file=/tmp/ready_maps
 
 num_todo=$2
@@ -9,19 +8,13 @@ num_todo=$2
 #  first go through
 
 for i in `seq 1 48` ; do 
-
-    if [ ! -f $target_file ] ; then
         
-        echo target is directory
-        target_file=/tmp/maplst
-        maps_in=$1
-        ls $maps_in/*.map | head -n $num_todo > $target_file
-        if [ $? != 0 ] ; then
-            echo No Mapfiles exiting 1
-            exit
-        fi
-    else
-        echo target is file
+    target_file=/tmp/maplst
+    maps_in=$1
+    ls $maps_in | head -n $num_todo | sed s/^/$maps_in'\/'/g > $target_file
+    if [ $? != 0 ] ; then
+        echo No Mapfiles exiting 1
+        exit
     fi
 
     stop=`cat /tmp/pub_status`
@@ -50,41 +43,6 @@ for i in `seq 1 48` ; do
     touch $ready_file
     echo -n "" > $ready_file
 
-    for map in `cat $target_file` ; do
-        
-        mapfn=$map
-
-        echo "BEGINPUB $mapfn"
-
-        isreplica="--set-replica"
-
-        isethrsm=`echo $map | grep -c MCM-UA` 
-
-        if [ $isethrsm -gt 0 ] ; then
-        	isreplica=""
-        fi
-
-        esgpublish --project cmip6 $isreplica --map $mapfn
-
-    	if [ $? != 0 ]  ; then 
-
-    		echo "[FAIL] esgpublish postgres $map"
-            mv $mapfn $CMIP6_err
-    		ok=1
-    		continue
-    	fi
-
-        esgpublish --project cmip6 $isreplica --map $mapfn --service fileservice --noscan --thredds --no-thredds-reinit
-
-    	if [ $? != 0 ]  ; then 
-
-    		echo "[FAIL] esgpublish thredds $map"
-            mv $mapfn $CMIP6_err
-    		ok=1
-    		continue
-    	fi
-        echo $mapfn >> $ready_file
-    done
 
     cat $target_file | parallel -j 4 bash publish-kernel.sh {} $ready_file 'UA-MCM'
 
