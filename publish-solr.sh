@@ -1,9 +1,9 @@
 CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
-CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err2
+CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err
 
-instance_id=3
+instance_id=1
 
-CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready.${instance_id}
+CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready
 
 tmp_file=/tmp/ready.${instance_id}
 
