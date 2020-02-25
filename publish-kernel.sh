@@ -1,6 +1,8 @@
 map=$1
 ready_file=$2
 exempt=$3
+CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err2
+
 
 mapfn=$map
 

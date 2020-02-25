@@ -1,6 +1,6 @@
 export UVCDAT_ANONYMOUS_LOG=no
 mapsin=/p/user_pub/publish-queue/CMIP6-maps-todo
-nitems=200
+nitems=600
 
 for i in `seq 1 50000`  ; do
     stop=`cat /tmp/pub_status`

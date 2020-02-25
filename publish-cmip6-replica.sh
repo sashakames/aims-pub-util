@@ -11,7 +11,7 @@ for i in `seq 1 48` ; do
         
     target_file=/tmp/maplst
     maps_in=$1
-    ls $maps_in | head -n $num_todo | sed s/^/$maps_in'\/'/g > $target_file
+    ls $maps_in | head -n $num_todo | sed s:^:${maps_in}/:g > $target_file
     if [ $? != 0 ] ; then
         echo No Mapfiles exiting 1
         exit
@@ -51,7 +51,8 @@ for i in `seq 1 48` ; do
     if [ $? != 0 ]  ; then 
         
         echo "[FAIL] esgpublish thredds reinit"
-        echo "publish-this $1 $dt completed [FAIL]" | sendmail ames4@llnl.gov    
+        echo "publish-this $1 $dt completed [FAIL] to reinit, exiting! last file $ready_file" | sendmail ames4@llnl.gov
+	echo true > /tmp/pub_status
         exit
     fi
 
