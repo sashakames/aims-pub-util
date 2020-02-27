@@ -31,6 +31,13 @@ for i in `seq 50000` ; do
 
     done
 
+f=`ls -tr /p/user_pub/publish-queue/dset-status/ | tail -n 1`
+res=`tail -n1 /p/user_pub/publish-queue/dset-status/$f | cut -d ' ' -f 3`
+
+if [ res -gt 100000 ] ; then
+    bash archive_mapfiles.sh 
+fi
+
 sleep 300
  
 done
