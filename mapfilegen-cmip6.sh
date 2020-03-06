@@ -3,7 +3,7 @@
 input_dir=$1
 m=$2
 
-outdir=/p/user_pub/publish-queue/CMIP6-maps-in
+outdir=/p/user_pub/publish-queue/CMIP6-maps-todo
 
 
 inidir=/export/ames4/pub/ini
@@ -25,17 +25,20 @@ for n in `cat $input_file`
 do
     i=$(( $i + 1 ))
     if [ $input_file == $last_file ] ; then
-        if [ $i -lt $resume_number ] ; then
-            echo SKIPPING $n at $i to resume to $resume_number
-            continue
-        fi
+
+	if [ $i -lt $resume_number ] ; then
+	    echo SKIPPING $n at $i to resume to $resume_number
+	    continue
+	fi
+
     fi
 
     stop=`cat /tmp/map_status`
 
     if [ $stop == "true" ] ; then
-        echo Received Stop Notification, exiting before $m $i
-        exit 1
+    	echo Received Stop Notification, exiting before $m $i
+	exit 1
+
     fi
 
 
@@ -52,10 +55,12 @@ do
  
     
     if [ $? -ne 0 ]; then
-    
-        echo esgmapfile $n [FAIL] $m $i
-        echo esgmapfile $n [FAIL] $m $i | sendmail ames4@llnl.gov
-        exit 1
+
+	
+	echo esgmapfile $n [FAIL] $m $i
+	echo esgmapfile $n [FAIL] $m $i | sendmail ames4@llnl.gov
+	exit 1
+
     fi
     
 done
