@@ -1,10 +1,22 @@
 CMIP6_done=/p/user_pub/publish-queue/CMIP6-maps-done
-CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err
-CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready
+CMIP6_err=/p/user_pub/publish-queue/CMIP6-maps-err2
+
+instance_id=3
+
+CMIP6_ready=/p/user_pub/publish-queue/CMIP6-maps-ready.${instance_id}
+
+tmp_file=/tmp/ready.${instance_id}
 
 for i in `seq 50000` ; do
 
-    for map in `ls $CMIP6_ready` ; do
+
+    ls $CMIP6_ready > $tmp_file
+    lscount=`cat $tmp_file | wc -l`
+    echo "PROCESSING $lscount files"
+
+    for map in `cat $tmp_file` ; do
+
+
         
         mapfn=$CMIP6_ready/$map
 
@@ -18,6 +30,13 @@ for i in `seq 50000` ; do
         fi
 
     done
+
+f=`ls -tr /p/user_pub/publish-queue/dset-status/ | tail -n 1`
+res=`tail -n1 /p/user_pub/publish-queue/dset-status/$f | cut -d ' ' -f 3`
+
+if [ res -gt 100000 ] ; then
+    bash archive_mapfiles.sh 
+fi
 
 sleep 300
  
