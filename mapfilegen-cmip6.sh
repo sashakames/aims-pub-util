@@ -51,7 +51,7 @@ do
         echo missing perms or mount [FAIL] $m $i | sendmail ames4@llnl.gov
         exit 1
     fi
-    esgmapfile -i $inidir --project cmip6 --outdir $outdir --max-processes 8 $n
+    esgmapfile -i $inidir --project cmip6 --outdir $outdir --max-processes 8 --no-cleanup $n
  
     
     if [ $? -ne 0 ]; then
