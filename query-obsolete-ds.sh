@@ -35,11 +35,19 @@ do
 
     for id in `cat dup.retracted.$i.$td.txt` ; do
     
-        echo wget --no-check-certificate --ca-certificate $cert --certificate $cert --private-key $cert --verbose -O response.xml --post-data="id=$id|${!serveri}.llnl.gov" https://esgf-node.llnl.gov/esg-search/ws/retract
-
+        wget --no-check-certificate --ca-certificate $cert --certificate $cert --private-key $cert --verbose -O response.xml --post-data="id=$id|${!serveri}.llnl.gov" https://esgf-node.llnl.gov/esg-search/ws/retract
         cat response.xml
         rm response.xml
     done
+
+    for id in `cat dup.versrepl.$i.$td.txt` ; do
+
+        wget --no-check-certificate --ca-certificate $cert --certificate $cert --private-key $cert --verbose -O response.xml \
+            "https://esgf-node.llnl.gov/esg-search/ws/updateById?action=set&core=datasets&field=latest&value=false&id=$id|${!serveri}.llnl.gov"
+        cat response.xml
+        rm response.xml
+    done
+
 
     mv ${!lfni} sorted.retracted.$i.$td.txt dup.retracted.$i.$td.txt sorted.versrepl.$i.$td.txt dup.versrepl.$i.$td.txt $destdir
 
