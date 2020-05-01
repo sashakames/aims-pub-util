@@ -35,7 +35,8 @@ do
 
     for id in `cat dup.retracted.$i.$td.txt` ; do
     
-        wget --no-check-certificate --ca-certificate $cert --certificate $cert --private-key $cert --verbose -O response.xml --post-data="id=$id|${!serveri}.llnl.gov" https://esgf-node.llnl.gov/esg-search/ws/retract
+        wget --no-check-certificate --ca-certificate $cert --certificate $cert --private-key $cert --verbose -O response.xml \
+         --post-data="id=$id|${!serveri}.llnl.gov"  https://esgf-node.llnl.gov/esg-search/ws/retract
         cat response.xml
         rm response.xml
     done
