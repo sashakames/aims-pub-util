@@ -25,6 +25,8 @@ def print_dsets(search_url):
 		resp = json.loads(requests.get(search_url.format(NUM_RETR, offset)).text)
 
 		numfound = resp["response"]["numFound"]
+                
+                print("resp found: {}".format(numfound))
 
 		if togo == 0:
 			if numfound > NUM_RETR:
@@ -40,6 +42,7 @@ def print_dsets(search_url):
 			if togo < 1:
 				going = False
 
+                print('listlen: {}'.format(len(resp["response"]["docs"])))
 		for n in resp["response"]["docs"]:
 			pf(n)
 
