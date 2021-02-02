@@ -1,11 +1,11 @@
 import sys
 
-PREFIX_LEN = 4
-PATH_LEN = 8
+PREFIX_LEN = 2
+PATH_LEN = 10
 
-last = PREFIX_LEN + PATH_LEN
+last = PREFIX_LEN + PATH_LEN 
 
-for line in open(sys.stdin):
+for line in sys.stdin:
 
     parts = line.split()
     
@@ -19,7 +19,7 @@ for line in open(sys.stdin):
 
     pp2 = path.split('/')
 
-    dset_id = ".".join(pp2[PREFIX_LEN:last]) + "#" + pp2[last][1:]
+    dset_id = ".".join(pp2[PREFIX_LEN + 1 :last]) + "#" + pp2[last][1:]
     
     out_arr = []
     out_arr.append(dset_id)
@@ -29,5 +29,5 @@ for line in open(sys.stdin):
     out_arr.append("checksum=" + checksum)
     out_arr.append("checksum_type=SHA256")
 
-    print("() | ".join(out_arr))
+    print(" | ".join(out_arr))
 

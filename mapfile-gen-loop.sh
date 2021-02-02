@@ -18,12 +18,6 @@ for i in `seq 1 50000` ; do
 
 	for m in `ls $input_dir` 
 	do
-	    stop=`cat /tmp/map_status`
-
-	    if [ $stop == "true" ] ; then
-		echo Received Stop Notification, exiting the outer loops!
-		exit
-	    fi
 
 	    stop=`cat /tmp/map_status`
 
