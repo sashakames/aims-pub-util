@@ -1,7 +1,7 @@
 import sys
 
-PREFIX_LEN = 2
-PATH_LEN = 10
+PREFIX_LEN = 3  # eg /p/user_pub/work/
+PATH_LEN = 9 # includes the version
 
 last = PREFIX_LEN + PATH_LEN 
 
@@ -19,7 +19,7 @@ for line in sys.stdin:
 
     pp2 = path.split('/')
 
-    dset_id = ".".join(pp2[PREFIX_LEN + 1 :last]) + "#" + pp2[last][1:]
+    dset_id = ".".join(pp2[PREFIX_LEN  :last]) + "#" + pp2[last][1:]
     
     out_arr = []
     out_arr.append(dset_id)

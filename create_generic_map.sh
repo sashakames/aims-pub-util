@@ -1,4 +1,7 @@
-if [ -z $1] ; then
+cmdir=`dirname $0`
+
+
+if [ -z $1 ] ; then
     echo Missing required directory argument
     exit
 fi
@@ -10,11 +13,16 @@ else
     exit
 fi
 
+if [ -z $2 ] ; then
+    echo Missing output file parameter
+    exit
+fi
 
-for fn in `find $dn -f` ; do
+
+for fn in `find $dn -type f` ; do
 
     y=`sha256sum $fn`
     x=`stat -c"%Z %s" $fn`
 
-    echo $y $x | python create_dset > $2
-done
+    echo $y $x | python $cmdir/create_dset.py 
+done > $2
