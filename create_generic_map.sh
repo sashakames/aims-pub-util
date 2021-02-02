@@ -2,7 +2,9 @@ cmdir=`dirname $0`
 
 
 if [ -z $1 ] ; then
-    echo Missing required directory argument
+    echo Missing required arguments
+    echo Usage:
+    echo '$ bash create_generic_map.sh <input-directory> <output-filename>'
     exit
 fi
 
