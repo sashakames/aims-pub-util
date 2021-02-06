@@ -1,7 +1,7 @@
 import sys
 
-PREFIX_LEN = 3  # eg /p/user_pub/work/
-PATH_LEN = 9 # includes the version
+PREFIX_LEN = 4  # eg /p/user_pub/work/ == 4
+PATH_LEN = 9 # includes the version this 
 
 last = PREFIX_LEN + PATH_LEN 
 
