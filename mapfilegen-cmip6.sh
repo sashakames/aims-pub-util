@@ -3,7 +3,7 @@
 input_dir=$1
 m=$2
 
-outdir=/p/user_pub/publish-queue/CMIP6-maps-todo
+outdir=/p/user_pub/publish-queue/CMIP6-maps-todo2
 
 
 inidir=/export/ames4/pub/ini
@@ -33,14 +33,6 @@ do
 
     fi
 
-    stop=`cat /tmp/map_status`
-
-    if [ $stop == "true" ] ; then
-    	echo Received Stop Notification, exiting before $m $i
-	exit 1
-
-    fi
-
 
     echo $i > current_line
 
@@ -51,8 +43,12 @@ do
         echo missing perms or mount [FAIL] $m $i | sendmail ames4@llnl.gov
         exit 1
     fi
-    esgmapfile -i $inidir --project cmip6 --outdir $outdir --max-processes 8 --no-cleanup $n
- 
+
+    chk=`echo $n | grep -c CREATE`
+    
+    if [ $chk -ne 1 ] ; then
+	esgmapfile -i $inidir --project cmip6 --outdir $outdir --max-processes 8 --no-cleanup $n
+    fi
     
     if [ $? -ne 0 ]; then
 
