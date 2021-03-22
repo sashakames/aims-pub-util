@@ -1,7 +1,7 @@
 import sys, os, json
 from esgcet.update import ESGPubUpdate
 
-CERT = "certificate-file"  # PRepend path
+CERT = "/p/user_pub/publish-queue/certs/certificate-file"  # PRepend path
 INDEX_NODE = "esgf-node.llnl.gov"
 
 def main(args):
@@ -10,7 +10,7 @@ def main(args):
 
     dsets = json.load(open(args[1]))
 
-    updator = ESGPubUpdate(INDEX_NODE, CERT)
+    updator = ESGPubUpdate(INDEX_NODE, CERT, verbose=True)
 
     finish = len(dsets)
     if len(args > 3):
@@ -18,7 +18,7 @@ def main(args):
 
     for rec in dsets[start:finish]:
 
-        id = rec['id']
-        if "llnl" in id:
+        did = rec['id']
+        if "llnl" in did:
 
-            updator.update_core(id, "files")
+            updator.update_core(did, "files")
