@@ -44,7 +44,7 @@ for fn in `ls $INDIR` ; do
         conda activate $pubenv
         for mapfn in `ls mapfiles` ; do
           ls -l mapfiles/$mapfn
-          esgpublish --map mapfiles/$mapfn
+          esgpublish --json $jsonfn --verbose --project input4mips --no-auth --map mapfiles/$mapfn
           if [ ! $? ] ; then
               echo [ERROR] 
               success=1
