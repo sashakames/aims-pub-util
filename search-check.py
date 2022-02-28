@@ -9,7 +9,7 @@ def print_func2(n):
 def print_func(n):
 	print(n["instance_id"])
 
-
+inst_id = "MOHC"
 
 def print_dsets(search_url):
 
@@ -50,21 +50,24 @@ def print_dsets(search_url):
 
 
 
+constraints = f"project=CMIP6&institution_id={inst_id}"
+
+
 if sys.argv[1] == "R":  # retracted original data
 
-	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=false&retracted=true&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id"
+	search_url = "http://esgf-node.llnl.gov/esg-search/search?{}&replica=false&retracted=true&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id"
 
 
 elif sys.argv[1] == "V":  # old versions of original data
 
-	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=false&latest=false&retracted=false&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id"
+	search_url = "http://esgf-node.llnl.gov/esg-search/search?{}&replica=false&latest=false&retracted=false&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id"
 
 elif sys.argv[1] == "L":  # latest replicas at LLNL
 	data_node = sys.argv[2]
-	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=true&latest=true&limit={}&offset={}&data_node="+data_node+".llnl.gov&format=application%2fsolr%2bjson&fields=instance_id,number_of_files"
+	search_url = "http://esgf-node.llnl.gov/esg-search/search?{}&replica=true&latest=true&limit={}&offset={}&data_node="+data_node+".llnl.gov&format=application%2fsolr%2bjson&fields=instance_id,number_of_files"
 
 elif sys.argv[1] == "O":  # latest original data
-	search_url = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&replica=false&latest=true&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id,number_of_files"
+	search_url = "http://esgf-node.llnl.gov/esg-search/search?{}&replica=false&latest=true&limit={}&offset={}&format=application%2fsolr%2bjson&fields=instance_id,number_of_files"
 
 else:
 	exit(1)
