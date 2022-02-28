@@ -28,7 +28,7 @@ def print_dsets(search_url):
 
         numfound = resp["response"]["numFound"]
                 
-                print("resp found: {}".format(numfound))
+#        print("resp found: {}".format(numfound))
 
         if togo == 0:
             if numfound > NUM_RETR:
@@ -44,7 +44,7 @@ def print_dsets(search_url):
             if togo < 1:
                 going = False
 
-                print('listlen: {}'.format(len(resp["response"]["docs"])))
+#                print('listlen: {}'.format(len(resp["response"]["docs"])))
         for n in resp["response"]["docs"]:
             pf(n)
 
