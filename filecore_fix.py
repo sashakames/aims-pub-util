@@ -6,19 +6,26 @@ INDEX_NODE = "esgf-node.llnl.gov"
 
 def main(args):
 
-    start = int(args[2])
+    print(f"Running filecore-fix with {str(args)}")
+    start = int(args[1])
 
-    dsets = json.load(open(args[1]))
+    dsets = json.load(open(args[0]))
 
-    updator = ESGPubUpdate(INDEX_NODE, CERT, verbose=True)
+    updator = ESGPubUpdate(INDEX_NODE, CERT, silent=True)
 
     finish = len(dsets)
-    if len(args > 3):
-        finish =int(args[3])
 
+    if len(args) > 2:
+        finish =int(args[2])
+
+        
     for rec in dsets[start:finish]:
 
         did = rec['id']
         if "llnl" in did:
-
             updator.update_core(did, "files")
+
+            
+if __name__ == '__main__':
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    main(sys.argv[1:])

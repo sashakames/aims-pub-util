@@ -2,7 +2,9 @@ import requests, json, os, sys
 
 NUM_RETR = 10000
 VERBOSE = False
-SEARCH_TEMPLATE = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&distrib=false&replica=true&latest=false&retracted=false&limit={}&offset={}&format=application%2fsolr%2bjson&fields=id"
+
+SEARCH_TEMPLATE = "http://esgf-node.llnl.gov/esg-search/search?project=CMIP6&distrib=false&replica=true&latest=true&retracted=false&limit={}&offset={}&data_node=aims3.llnl.gov,esgf-data1.llnl.gov&format=application%2fsolr%2bjson&fields=instance_id"
+
 
 
 def get_dsets(search_url):
