@@ -1,14 +1,15 @@
 import sys
 
-PREFIX_LEN = 4  # eg /p/user_pub/work/ == 4
+#   PREFIX_LEN = 8  # eg /p/user_pub/work/ == 4
 PATH_LEN = 9 # includes the version this 
 
-last = PREFIX_LEN + PATH_LEN 
+firstid = sys.argv[1]
 
 for line in sys.stdin:
 
     parts = line.split()
     
+
     path = parts[1]
 
     checksum = parts[0]
@@ -18,8 +19,9 @@ for line in sys.stdin:
     sz = parts[3].strip()  # size
 
     pp2 = path.split('/')
-
-    dset_id = ".".join(pp2[PREFIX_LEN  :last]) + "#" + pp2[last][1:]
+    idx = pp2.index(firstid)
+    last = len(pp2) - 2
+    dset_id = ".".join(pp2[idx  :last]) + "#" + pp2[last][1:]
     
     out_arr = []
     out_arr.append(dset_id)
