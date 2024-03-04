@@ -10,7 +10,7 @@ Data with replica=false,latest=true, llnl node replica=true,latest=true : mark a
 Data with replica=false,latest=true  not on filesystem:  requeue in Synda
 Data with replica=false,latest=true  on “scratch”: needs to be moved and put on a “datasets_since” list
 Data with replica=false,latest=true  on “esgf_publish”: ready for publication, I will queue these up.
-  """     
+"""     
 
 
 def orig_check(obj):
@@ -41,6 +41,7 @@ completed = []
 moved = []
 published = []
 pub_fs_missing = []
+nomatch = []
 
 for line in open(sys.argv[1]):
 
@@ -70,25 +71,33 @@ for line in open(sys.argv[1]):
                 completed.append(dataset_id)
             else:
                 moved.append(dataset_id)
-    else 
-    
+    else:
+        nomatch.append(line)
 
 THE_MAP = {
     "no_scope" :
     no_scope ,
-
 "deleted" :
 deleted,
-
-nolatest 
-
-nooriginal_latest
-
-missing 
-completed 
-moved 
-published 
-
+"nolatest" : 
+nolatest, 
+"nooriginal_latest":
+nooriginal_latest,
+"missing":
+missing, 
+"completed":
+completed, 
+"moved":
+moved, 
+"published" : 
+published,
+"nomatch" : nomatch
 }
+
+for kk in THE_MAP:
+    res = THE_MAP[kk]
+    with open(f"{kk}.out", "w") as f:
+        for line in res:
+            print(line,file=f)
 
         
